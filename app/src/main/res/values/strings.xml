@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">funProject</string>
+    <string name="login">登陆</string>
+    <string name="register">注册</string>
+    <string name="account_hint">输入用户名</string>
+    <string name="pw_hint">请输入密码</string>
 </resources>
