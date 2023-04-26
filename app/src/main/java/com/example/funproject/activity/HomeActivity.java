@@ -11,9 +11,9 @@ import android.widget.Toolbar;
 
 import com.example.funproject.R;
 import com.example.funproject.fragment.MyFragmentPagerAdapter;
+import com.google.android.material.badge.BadgeDrawable;
 
 public class HomeActivity extends AppCompatActivity {
-    private TextView txt_topbar;
     private RadioGroup rg_tab_bar;
     private RadioButton rb_channel;
     private RadioButton rb_message;
@@ -38,7 +38,6 @@ public class HomeActivity extends AppCompatActivity {
         rb_channel.setChecked(true);
     }
     private void bindViews() {
-        txt_topbar = (TextView) findViewById(R.id.txt_topbar);
         rg_tab_bar = (RadioGroup) findViewById(R.id.rg_tab_bar);
         rb_channel = (RadioButton) findViewById(R.id.rb_channel);
         rb_message = (RadioButton) findViewById(R.id.rb_message);
@@ -97,5 +96,6 @@ public class HomeActivity extends AppCompatActivity {
                 vpager.setCurrentItem(PAGE_FOUR);
                 break;
         }
+
     }
 }
