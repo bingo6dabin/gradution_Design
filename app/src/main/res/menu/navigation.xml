@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+    android:title="@string/home"
+    android:id="@+id/navagation_home"
+    android:icon="@drawable/home">
+</item>
+    <item
+        android:title="@string/chat"
+        android:id="@+id/navagation_chat"
+        android:icon="@drawable/home">
+    </item>
+    <item
+        android:title="@string/myInfo"
+        android:id="@+id/navagation_myInfo"
+        android:icon="@drawable/home">
+    </item>
+
+</menu>
