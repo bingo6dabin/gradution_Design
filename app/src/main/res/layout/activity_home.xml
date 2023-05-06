@@ -14,29 +14,32 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/rb_channel"
+            android:id="@+id/rb_home"
             style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_channel"
-            android:text="@string/tab_menu_alert" />
+            android:drawableTop="@drawable/tab_menu_setting"
+            android:text="@string/tab_menu_home" />
 
         <RadioButton
             android:id="@+id/rb_message"
             style="@style/tab_menu_item"
             android:drawableTop="@drawable/tab_menu_message"
-            android:text="@string/tab_menu_profile" />
+            android:text="@string/tab_menu_message" />
 
         <RadioButton
-            android:id="@+id/rb_better"
+            android:id="@+id/rb_share"
+            style="@style/tab_menu_item"
+            android:drawableTop="@drawable/share_blue"
+            />
+        <RadioButton
+            android:id="@+id/rb_my"
             style="@style/tab_menu_item"
             android:drawableTop="@drawable/tab_menu_better"
-            android:text="@string/tab_menu_pay" />
-
+            android:text="@string/tab_menu_my" />
         <RadioButton
             android:id="@+id/rb_setting"
             style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_setting"
+            android:drawableTop="@drawable/tab_menu_message"
             android:text="@string/tab_menu_setting" />
-
     </RadioGroup>
 
     <View

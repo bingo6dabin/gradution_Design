@@ -16,17 +16,20 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private final int PAGER_COUNT = 4;
 //    private MyFragment1 myFragment1 = null;
-    private MyFragment2 myFragment2 = null;
-    private MyFragment3 myFragment3 = null;
+//    private MyFragment2 myFragment2 = null;
+//    private MyFragment3 myFragment3 = null;
     private MyFragment4 myFragment4 = null;
     private  shouye shouyeFragment = null;
-
+    private  MessageFragment messageFragment =null;
+    private  MyFragment myFragment = null;
     public MyFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
         shouyeFragment = new shouye();
+        messageFragment = new MessageFragment();
+        myFragment = new MyFragment();
 //        myFragment1 = new MyFragment1();
-        myFragment2 = new MyFragment2();
-        myFragment3 = new MyFragment3();
+//        myFragment2 = new MyFragment2();
+//        myFragment3 = new MyFragment3();
         myFragment4 = new MyFragment4();
     }
 
@@ -55,10 +58,10 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
                 fragment = shouyeFragment;
                 break;
             case HomeActivity.PAGE_TWO:
-                fragment = myFragment2;
+                fragment = messageFragment;
                 break;
             case HomeActivity.PAGE_THREE:
-                fragment = myFragment3;
+                fragment = myFragment;
                 break;
             case HomeActivity.PAGE_FOUR:
                 fragment = myFragment4;

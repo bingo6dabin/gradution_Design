@@ -28,6 +28,7 @@ public class shouye extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -82,24 +83,46 @@ public class shouye extends Fragment {
     private void initData() {
         mFragmentList = new ArrayList<>();
 
-        MyFragment1 fragment1 = new MyFragment1();
-        MyFragment1 fragment2 = new MyFragment1();
-        MyFragment1 fragment3 = new MyFragment1();
-        MyFragment1 fragment4 = new MyFragment1();
-        MyFragment1 fragment5 = new MyFragment1();
+        games mgames = new games("4");
+        HomeBaseFragment entertainment = new HomeBaseFragment("5");
+        HomeBaseFragment life = new HomeBaseFragment("160");
+        HomeBaseFragment animation = new HomeBaseFragment("1");
+        HomeBaseFragment guichu = new HomeBaseFragment("119");
+        HomeBaseFragment fasion = new HomeBaseFragment("155");
+        HomeBaseFragment konwledge = new HomeBaseFragment("36");
+        HomeBaseFragment food = new HomeBaseFragment("211");
+        HomeBaseFragment dangce = new HomeBaseFragment("129");
+        HomeBaseFragment science = new HomeBaseFragment("188");
+        HomeBaseFragment car = new HomeBaseFragment("223");
+        HomeBaseFragment chinaAnimation = new HomeBaseFragment("167");
 
-        mFragmentList.add(fragment1);
-        mFragmentList.add(fragment2);
-        mFragmentList.add(fragment3);
-        mFragmentList.add(fragment4);
-        mFragmentList.add(fragment5);
+        mFragmentList.add(mgames);
+        mFragmentList.add(entertainment);
+        mFragmentList.add(life);
+        mFragmentList.add(animation);
+        mFragmentList.add(guichu);
+        mFragmentList.add(fasion);
+        mFragmentList.add(konwledge);
+        mFragmentList.add(food);
+        mFragmentList.add(dangce);
+        mFragmentList.add(science);
+        mFragmentList.add(car);
+        mFragmentList.add(chinaAnimation);
+
 
         mTitleList = new ArrayList<>();
 
-        mTitleList.add("推荐");
-        mTitleList.add("关注");
-        mTitleList.add("好看");
-        mTitleList.add("时政");
+        mTitleList.add("游戏");
+        mTitleList.add("娱乐");
+        mTitleList.add("生活");
+        mTitleList.add("动画");
+        mTitleList.add("鬼畜");
+        mTitleList.add("时尚");
+        mTitleList.add("知识");
+        mTitleList.add("美食");
+        mTitleList.add("舞蹈");
+        mTitleList.add("科技");
         mTitleList.add("汽车");
+        mTitleList.add("国产动画");
     }
 }
