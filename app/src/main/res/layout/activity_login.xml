@@ -41,6 +41,7 @@
                     >
                 </ImageView>
                 <EditText
+                    android:id="@+id/et_accountLogin"
                     android:layout_marginLeft="20dp"
                     android:layout_width="wrap_content"
                     android:textColorHint="#bcbcbc"
@@ -60,26 +61,26 @@
                 android:layout_height="1dp"
                 android:background="#e8e7e7">
             </View>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@mipmap/pwd"
-                    >
-                </ImageView>
+                    android:src="@mipmap/pwd"></ImageView>
+
                 <EditText
-                    android:layout_marginLeft="20dp"
+                    android:id="@+id/et_pwdLogin"
                     android:layout_width="wrap_content"
-                    android:textColorHint="#bcbcbc"
-                    android:background="@null"
-                    android:textColor="#000000"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@null"
                     android:hint="@string/pw_hint"
-                    >
-                </EditText>
+                    android:textColor="#000000"
+                    android:textColorHint="#bcbcbc"
+                    android:textSize="18sp"></EditText>
             </LinearLayout>
         </LinearLayout>
         <Button

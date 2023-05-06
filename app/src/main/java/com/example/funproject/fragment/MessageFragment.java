@@ -19,6 +19,7 @@ import com.example.funproject.dedigned_class.ModifyClass.GridSpacingItemDecorati
 import com.example.funproject.entity.NewsEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -36,6 +37,7 @@ public class MessageFragment extends Fragment {
     private  List<NewsEntity> mNewsList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MessageListAdapter mMessageListAdapter;
+    private int pageNum = 1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -88,4 +90,5 @@ public class MessageFragment extends Fragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount,spacing,includeEdge));
          return  view;
     }
+
 }

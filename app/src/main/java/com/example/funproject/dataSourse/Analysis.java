@@ -54,6 +54,7 @@ public class Analysis {
         }
         return result;
     }
+
     public static String get_cid(String bvid){
         String cid_url = "https://api.bilibili.com/x/player/pagelist?bvid=" + bvid + "&jsonp=jsonp";
         OkHttpClient okHttpClient = new OkHttpClient();
