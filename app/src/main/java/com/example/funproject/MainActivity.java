@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private Button loginButton ;
     private Button registerButton;
     private  funProDataBaseHelper mHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent inToLogin  = new Intent(MainActivity.this, LoginActivity.class);
-
                 startActivity(inToLogin);
             }
         });
@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
          //打开数据库读写连接
         mHelper.openReadLink();
         mHelper.openWriteLink();
-
     }
 
     @Override

@@ -53,7 +53,7 @@ private  EditText etPwd;
             }
            else if(!StringUtils.isEmpty(account)&&!StringUtils.isEmpty(pwd)&&mHelper.queryByUser(user)){
                 showToastSync("登陆成功");
-                Intent inToHome  = new Intent(LoginActivity.this, HomeActivity.class);
+                Intent inToHome  = new Intent(LoginActivity.this, AgeAnalaysActivity.class);
                 startActivity(inToHome);
             }
             else{
