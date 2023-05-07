@@ -1,28 +1,52 @@
 package com.example.funproject.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.Camera;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.aliyun.facebody20191230.Client;
 import com.aliyun.facebody20191230.models.RecognizeFaceAdvanceRequest;
 import com.aliyun.facebody20191230.models.RecognizeFaceRequest;
 import com.aliyun.facebody20191230.models.RecognizeFaceResponse;
 
 
+import com.aliyun.tea.TeaException;
 import com.aliyun.tea.TeaModel;
 import com.aliyun.teaopenapi.models.Config;
+import com.aliyun.teautil.Common;
 import com.aliyun.teautil.models.RuntimeOptions;
 import com.example.funproject.R;
+import com.example.funproject.adapter.VideoListAdapter;
+import com.example.funproject.entity.Video;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AgeAnalaysActivity extends BaseActivity {
     private  String TAG = "AgeAnalays";
+    private File currentImageFile = null;
+private  int age;
     /*
      这个client是为了请求服务端接口，这里只是为了端上演示，所以将代码写在了Android端
      真正上线不建议将ACCESS_KEY_ID和ACCESS_KEY_SECRET写在端上，会有泄漏风险，建议将请求服务端接口代码写到您的服务端
@@ -57,7 +81,9 @@ public class AgeAnalaysActivity extends BaseActivity {
                 try {
 
                     // filePath请改成您的真实文件路径
-                    String filePath = "resource/test_images/myPhoto.jpg";
+                     String filePath = "resource/test_images/myPhoto.jpg";
+//                    String filePath = String.valueOf(currentImageFile.toURL());
+
                     Log.d(TAG, String.format("begin callApi: %s %s", "RecognizeBankCard", filePath));
                     // 使用文件，文件通过inputStream传入接口。这里只是演示了assets下的文件如何转为stream，如果文件来自其他地方，如sdcard或者摄像头，请自行查看android开发文档或教程将文件转为stream之后传入。
                     InputStream inputStream = AgeAnalaysActivity.this.getAssets().open(filePath);
@@ -71,9 +97,27 @@ public class AgeAnalaysActivity extends BaseActivity {
                     RecognizeFaceResponse recognizeFaceResponse = client.recognizeFaceAdvance(recognizeFaceAdvanceRequest, runtime);
                     // 获取整体结果
                     System.out.println("结果如下");
-                    System.out.println(com.aliyun.teautil.Common.toJSONString(TeaModel.buildMap(recognizeFaceResponse)));
+                    System.out.println(Common.toJSONString(TeaModel.buildMap(recognizeFaceResponse)));
 
-                } catch (com.aliyun.tea.TeaException teaException) {
+                    String response =Common.toJSONString(TeaModel.buildMap(recognizeFaceResponse));
+                    JSONObject responseObj = JSONObject.parseObject(response);
+
+                    String body = responseObj.getString("body");
+                    JSONObject bodyObj = JSONObject.parseObject(body);
+
+                    String data = bodyObj.getString("Data");
+                    JSONObject dataObj = JSONObject.parseObject(data);
+
+                    JSONArray ageListObj = dataObj.getJSONArray("AgeList");
+                         age = ageListObj.getInteger(0);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("age",age);
+                    Message mMessage= new Message();
+                    mMessage.setData(bundle);
+                    getInformation.sendMessage(mMessage);
+
+                } catch (TeaException teaException) {
                     Log.d(TAG, "teaException.getCode(): " + teaException.getCode());
                     // 请处理Exception
                 } catch (Exception e) {
@@ -82,6 +126,28 @@ public class AgeAnalaysActivity extends BaseActivity {
                 }
             }
         }).start();
-
+    }
+    //向handler中传递消息，由handler响应并返回信息
+    @SuppressLint("HandlerLeak")
+    private final Handler getInformation = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+             age = (int)data.getSerializable("age");
+            if(age>=18) {
+                showToastSync("人脸认证成功");
+                Intent intent = new Intent(AgeAnalaysActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }else{
+                showToastSync("人脸认证失败");
+                Intent intent = new Intent(AgeAnalaysActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        }
+    };
+    //销毁
+    public void onDestroy() {
+        super.onDestroy();
     }
 }
