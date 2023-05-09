@@ -3,26 +3,78 @@ package com.example.funproject.entity;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private String   uid;
+    private Integer   uid;
     private String     username;
     private String  password;
     private String      headImage;
+    private Integer   favoratesNum;
+    private  Integer collectesNum;
+    private  Integer commentNum;
+    private  Integer shareNum;
     private String  createTime;
+
+
     public User(){
     }
-    public  User(String uid,String username,String password,String headImage,String createTime){
+    public  User(Integer uid, String username, String password, String headImage, Integer favoratesNum, Integer collectesNum, Integer commentNum, Integer shareNum, String createTime, String introduce){
         this.uid = uid;
         this.username = username;
         this.password = password;
         this.headImage = headImage;
+        this.favoratesNum = favoratesNum;
+        this.collectesNum = collectesNum;
+        this.commentNum = commentNum;
+        this.shareNum = shareNum;
         this.createTime = createTime;
+        this.introduce = introduce;
     }
 
-    public String getUid() {
+    public Integer getFavoratesNum() {
+        return favoratesNum;
+    }
+
+    public void setFavoratesNum(Integer favoratesNum) {
+        this.favoratesNum = favoratesNum;
+    }
+
+    public Integer getCollectesNum() {
+        return collectesNum;
+    }
+
+    public void setCollectesNum(Integer collectesNum) {
+        this.collectesNum = collectesNum;
+    }
+
+    public Integer getCommentNum() {
+        return commentNum;
+    }
+
+    public void setCommentNum(Integer commentNum) {
+        this.commentNum = commentNum;
+    }
+
+    public Integer getShareNum() {
+        return shareNum;
+    }
+
+    public void setShareNum(Integer shareNum) {
+        this.shareNum = shareNum;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
+    private  String introduce;
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
     }
 

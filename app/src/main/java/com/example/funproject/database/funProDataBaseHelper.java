@@ -58,37 +58,34 @@ public class funProDataBaseHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
         String createUser = "CREATE TABLE IF NOT EXISTS user (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
                 "username VARCHAR NOT NULL,"+
                 "password VARCHAR NOT NULL,"+
                 "headImage VARCHAR NOT NULL,"+
                 "createTime VARCHAR NOT NULL);";
-            sqLiteDatabase.execSQL(createUser);
+        sqLiteDatabase.execSQL(createUser);
+
+        String createVideo = "CREATE TABLE IF NOT EXISTS video (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
+                "_uid INTEGER  NOT NULL,"+
+                "authorName VARCHAR NOT NULL,"+
+                "VideoName VARCHAR NOT NULL,"+
+                "typename VARCHAR NOT NULL,"+
+                "VideoImageUrl VARCHAR NOT NULL,"+
+                "VideoUrl VARCHAR NOT NULL,"+
+                "description VARCHAR NOT NULL,"+
+                "_favoritesCount Integer NOT NULL,"+
+                "_CollectCount Integer NOT NULL,"+
+                "play Integer NOT NULL,"+
+                "createTime VARCHAR NOT NULL);";
+        sqLiteDatabase.execSQL(createVideo);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
-    public  long insertToUser(User user){
-        ContentValues values = new ContentValues();
-        values.put("username",user.getUsername());
-        values.put("password",user.getPassword());
-        values.put("headImage",user.getHeadImage());
-        values.put("createTime",user.getCreateTime());
-        return mWDB.insert("user",null,values);
-    }
-    @SuppressLint("Range")
-    public boolean queryByUser(User  user){
-//        Cursor cursor = mRDB.query("user",null,null,null,null,null,null);
-        Cursor cursor = mWDB.query("user",null,"username=?",new String[]{user.getUsername()},null,null,null);
-        while(cursor.moveToNext()){
-          if(user.getPassword().equals(cursor.getString(cursor.getColumnIndex("password"))) ) {
-              return true;
-          }
-        }
-        return false;
-    }
-
 }

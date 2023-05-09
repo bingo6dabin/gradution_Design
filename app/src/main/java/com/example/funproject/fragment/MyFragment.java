@@ -1,5 +1,6 @@
 package com.example.funproject.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +8,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextClock;
+import android.widget.TextView;
 
 import com.example.funproject.R;
+import com.example.funproject.activity.LoginActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +31,15 @@ public class MyFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private RelativeLayout rl_logout;
+    private  RelativeLayout rl_changeInfo;
+  private ImageView myHeader;
+  private TextView mName;
+  private  TextView myIntroduce;
+  private TextView favoratesNum;
+    private TextView collectNum;
+    private TextView commentNum;
+    private TextView shareNum;
     public MyFragment() {
         // Required empty public constructor
     }
@@ -55,12 +69,30 @@ public class MyFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my, container, false);
+        View view= inflater.inflate(R.layout.fragment_my, container, false);
+        initView(view);
+
+        rl_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        return view;
     }
+
+    private void initView(View view) {
+        rl_logout = view.findViewById(R.id.rl_logout);
+
+    }
+
+
 }

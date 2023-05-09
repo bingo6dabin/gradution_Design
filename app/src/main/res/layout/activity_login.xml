@@ -79,6 +79,7 @@
                     android:background="@null"
                     android:hint="@string/pw_hint"
                     android:textColor="#000000"
+                    android:inputType="textPassword"
                     android:textColorHint="#bcbcbc"
                     android:textSize="18sp"></EditText>
             </LinearLayout>

@@ -32,10 +32,12 @@ import java.util.List;
 
 public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.ViewHolder> {
     private List<Video> mVideoes;
+    private  int preViewAccount;
     String mVideoImageUrl;
     //获取activity的video数据
-    public VideoListAdapter(List<Video> mVideoes){
+    public VideoListAdapter(List<Video> mVideoes,int preViewAccount){
         this.mVideoes = mVideoes;
+        this.preViewAccount =preViewAccount;
     }
     public  VideoListAdapter(){
 
@@ -63,17 +65,18 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull VideoListAdapter.ViewHolder holder, int position) {
-        Video mVideo =mVideoes.get(position);
-        //设置imageView视频的封面图片方法一
+
+           Video mVideo =mVideoes.get(position);
+           //设置imageView视频的封面图片方法一
 //        mVideoImageUrl=mVideo.getVideoimageUrl();
 //        loadImage(holder.imageView);
 //        方法二使用现有的Glide加载图片速度快
-        System.out.println("图片资源地址");
-        System.out.println(mVideo.getVideoimageUrl());
+           System.out.println("图片资源地址");
+           System.out.println(mVideo.getVideoimageUrl());
 //        Glide.with(holder.videoView.getContext()).load(Uri.parse("https://www.jazzradio.fr/media/radio/blues.png"))
 //                .into(holder.imageView);
-        Glide.with(holder.videoView.getContext()).load(Uri.parse(mVideo.getVideoimageUrl()))
-                .into(holder.imageView);
+           Glide.with(holder.videoView.getContext()).load(Uri.parse(mVideo.getVideoimageUrl()))
+                   .into(holder.imageView);
     }
 
     @Override

@@ -84,17 +84,17 @@ public class shouye extends Fragment {
         mFragmentList = new ArrayList<>();
 
         games mgames = new games("4");
-        HomeBaseFragment entertainment = new HomeBaseFragment("5");
-        HomeBaseFragment life = new HomeBaseFragment("160");
-        HomeBaseFragment animation = new HomeBaseFragment("1");
-        HomeBaseFragment guichu = new HomeBaseFragment("119");
-        HomeBaseFragment fasion = new HomeBaseFragment("155");
-        HomeBaseFragment konwledge = new HomeBaseFragment("36");
-        HomeBaseFragment food = new HomeBaseFragment("211");
-        HomeBaseFragment dangce = new HomeBaseFragment("129");
-        HomeBaseFragment science = new HomeBaseFragment("188");
-        HomeBaseFragment car = new HomeBaseFragment("223");
-        HomeBaseFragment chinaAnimation = new HomeBaseFragment("167");
+        games entertainment = new games("5");
+        games life = new games("160");
+        games animation = new games("1");
+        games guichu = new games("119");
+        games fasion = new games("155");
+        games konwledge = new games("36");
+        games food = new games("211");
+        games dangce = new games("129");
+        games science = new games("188");
+        games car = new games("223");
+        games chinaAnimation = new games("167");
 
         mFragmentList.add(mgames);
         mFragmentList.add(entertainment);

@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,12 +13,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -46,6 +42,7 @@ import java.util.regex.Matcher;
 public class games extends HomeBaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private  int videoNum=0;
     private volatile List<Video> mVideoes = new ArrayList<>();
     private VideoListAdapter mVideoListAdapter;
     private String categoryId;
@@ -100,8 +97,6 @@ public class games extends HomeBaseFragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        mVideoListAdapter = new VideoListAdapter(mVideoes);
-        recyclerView.setAdapter(mVideoListAdapter);
 
         @SuppressLint("WrongConstant") GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(),2, OrientationHelper.VERTICAL,false);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -120,8 +115,12 @@ public class games extends HomeBaseFragment {
             super.handleMessage(msg);
             Bundle data = msg.getData();
             mVideoes.add((Video)data.getSerializable("video"));
-            mVideoListAdapter = new VideoListAdapter(mVideoes);
-            recyclerView.setAdapter(mVideoListAdapter);
+            if(mVideoes.size()-videoNum>5)
+            {
+                mVideoListAdapter = new VideoListAdapter(mVideoes,videoNum);
+                recyclerView.setAdapter(mVideoListAdapter);
+                videoNum = mVideoes.size();
+            }
         }
     };
     //异步线程
@@ -148,13 +147,26 @@ public class games extends HomeBaseFragment {
             JSONArray dataArray = parse.getJSONArray("data");
             //遍历打印对象数组的数据
             for (Object obj : dataArray) {
+
                 JSONObject jsonObject = (JSONObject) JSONObject.toJSON(obj);
+
+                String  authorName = (String)jsonObject.get("author");
+                String  title = (String)jsonObject.get("title");
+                String  typeName = (String)jsonObject.get("typename");
+                String pic = (String) jsonObject.get("pic");
                 String bvid = (String) jsonObject.get("bvid");
                 String tname = (String) jsonObject.get("tname");
-                String pic = (String) jsonObject.get("pic");
-                String title = (String) jsonObject.get("title");
+                String description = (String) jsonObject.get("description");
+                Integer favoritesCount = (Integer) jsonObject.get("favorites");
+                Integer CollectCount= (Integer) jsonObject.get("coins");
+                Integer play = (Integer) jsonObject.get("play");
+                String creatTime = (String) jsonObject.get("create");
                 String desc = (String) jsonObject.get("desc");
                 String jsonString1 = Analysis.get_cid(bvid);
+
+                String temptest = jsonObject.toString().trim();
+                System.out.println(temptest);
+
                 //将获取的json数据的花括号去掉，保证解析过程中格式正确
                 //String data03 = jsonString1.substring(0, jsonString.length() - 1);
                 JSONObject parse1 = JSONObject.parseObject(jsonString1);
@@ -184,11 +196,11 @@ public class games extends HomeBaseFragment {
                     Matcher matcher = Patterns.WEB_URL.matcher(newString);
                     if (matcher.find()) {
                         System.out.println("[bvid:" + bvid + ",cid:" + cid + ",tname:" + tname + ",title:" + title + ",desc:" + desc + ",deadline:" + res + ",[pic:" + pic + "]," + "url:" + matcher.group() + "]");
-                        Video tempVideo = new Video("myVideo", 1, pic, matcher.group());
+                        Video tempVideo = new Video(0,0,authorName,title,typeName,pic,matcher.group(),description,favoritesCount,CollectCount,play,creatTime, 0);
 //                                      mVideoes.add(tempVideo);
 //                                    将video加载到message中用于bundle在传递数据到UI线程
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("video", new Video("myVideo", 1, pic, matcher.group()));
+                        bundle.putSerializable("video",tempVideo);
                         Message mMessage= new Message();
                         mMessage.setData(bundle);
                         getInformation.sendMessage(mMessage);

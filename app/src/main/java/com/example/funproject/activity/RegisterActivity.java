@@ -1,20 +1,17 @@
 package com.example.funproject.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.funproject.R;
-import com.example.funproject.database.funProDataBaseHelper;
+import com.example.funproject.database.UserDataBaseHelper;
 import com.example.funproject.entity.User;
 import com.example.funproject.util.StringUtils;
 
 public class RegisterActivity extends BaseActivity {
-    private funProDataBaseHelper mHelper;
+    private UserDataBaseHelper mUserHelper;
     private EditText et_username;
     private EditText et_pwd;
 private Button bt_register;
@@ -28,14 +25,14 @@ private Button bt_register;
     private void register() {
         String account = et_username.getText().toString().trim();
         String pwd = et_pwd.getText().toString().trim();
-        User user = new User("null",account,pwd,"null","null");
+        User user = new User(0,account,pwd,"null", 0, 0, 0, 0, "null", "null");
         if(StringUtils.isEmpty(account)){
             showToastSync("请输入账户");
         }
         if(StringUtils.isEmpty(pwd)) {
             showToastSync("请输入密码");
         }
-        mHelper.insertToUser(user);
+        mUserHelper.insertToUser(user);
             showToastSync("注册成功");
             navigateTo(LoginActivity.class);
     }
@@ -55,10 +52,10 @@ private Button bt_register;
     protected void onStart() {
         super.onStart();
         //获得数据库帮助器实例
-        mHelper = funProDataBaseHelper.getInstance(this);
+        mUserHelper = UserDataBaseHelper.getInstance(this);
         //打开数据库读写连接
-        mHelper.openReadLink();
-        mHelper.openWriteLink();
+        mUserHelper.openReadLink();
+        mUserHelper.openWriteLink();
 
     }
 
