@@ -22,8 +22,7 @@ private Button loginButton;
 private EditText etAccount;
 private  EditText etPwd;
 private  Boolean isRemenber =false;
-private SharedPreferences sharedPreferences ;
-    SharedPreferences preferences;
+private SharedPreferences preferences;
     private UserDataBaseHelper mUserHelper;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -31,6 +30,7 @@ private SharedPreferences sharedPreferences ;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
+
     }
 
     private void initView() {
@@ -66,8 +66,8 @@ private SharedPreferences sharedPreferences ;
                 editor.putString("password",etPwd.getText().toString());
                 editor.commit();
 
-                Intent inToHome  = new Intent(LoginActivity.this, AgeAnalaysActivity.class);
-                startActivity(inToHome);
+                navigateToWithFlag(AgeAnalaysActivity.class,
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             }
             else{
                showToastSync("账号或密码错误");

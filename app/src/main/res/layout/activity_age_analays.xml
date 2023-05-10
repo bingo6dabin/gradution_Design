@@ -24,7 +24,7 @@
         android:layout_marginRight="20dp"
         android:gravity="center"
         android:onClick="callApiLocal"
-        android:text="开始调用(文件在本地)"
+        android:text="点击进行人脸识别"
         android:textColor="@android:color/black"
         android:textSize="18dp" />
 

@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.funproject.R;
 import com.example.funproject.adapter.VideoListAdapter;
 import com.example.funproject.dataSourse.Analysis;
+import com.example.funproject.database.UserDataBaseHelper;
 import com.example.funproject.entity.Video;
 import com.example.funproject.fragment.MyFragmentPagerAdapter;
 import com.google.android.material.badge.BadgeDrawable;
@@ -44,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     private VideoListAdapter mVideoListAdapter;
     private String categoryId="4";
     private MyFragmentPagerAdapter mAdapter;
+    private  UserDataBaseHelper mUserHelper;
 
     //几个代表页面的常量
     public static final int PAGE_ONE = 0;
@@ -58,6 +60,12 @@ public class HomeActivity extends AppCompatActivity {
         mAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         bindViews();
         rb_shouye.setChecked(true);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
 
     }
     private void bindViews() {

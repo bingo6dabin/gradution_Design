@@ -11,6 +11,7 @@ public class User implements Serializable {
     private  Integer collectesNum;
     private  Integer commentNum;
     private  Integer shareNum;
+    private  String introduce;
     private String  createTime;
 
 
@@ -69,7 +70,6 @@ public class User implements Serializable {
         this.introduce = introduce;
     }
 
-    private  String introduce;
     public Integer getUid() {
         return uid;
     }

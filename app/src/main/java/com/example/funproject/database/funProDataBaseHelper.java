@@ -62,8 +62,13 @@ public class funProDataBaseHelper extends SQLiteOpenHelper {
         String createUser = "CREATE TABLE IF NOT EXISTS user (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
                 "username VARCHAR NOT NULL,"+
+                "introduce VARCHAR NOT NULL,"+
                 "password VARCHAR NOT NULL,"+
                 "headImage VARCHAR NOT NULL,"+
+                "_favoratesNum Integer NOT NULL,"+
+                "_collectesNum Integer NOT NULL,"+
+                "_commentNum Integer NOT NULL,"+
+                "_shareNum Integer NOT NULL,"+
                 "createTime VARCHAR NOT NULL);";
         sqLiteDatabase.execSQL(createUser);
 

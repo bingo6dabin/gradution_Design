@@ -115,12 +115,9 @@ public class games extends HomeBaseFragment {
             super.handleMessage(msg);
             Bundle data = msg.getData();
             mVideoes.add((Video)data.getSerializable("video"));
-            if(mVideoes.size()-videoNum>5)
-            {
+
                 mVideoListAdapter = new VideoListAdapter(mVideoes,videoNum);
                 recyclerView.setAdapter(mVideoListAdapter);
-                videoNum = mVideoes.size();
-            }
         }
     };
     //异步线程

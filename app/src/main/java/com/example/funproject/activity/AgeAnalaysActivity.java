@@ -52,9 +52,11 @@ import com.aliyun.tea.TeaModel;
 import com.aliyun.teaopenapi.models.Config;
 import com.aliyun.teautil.Common;
 import com.aliyun.teautil.models.RuntimeOptions;
+import com.bumptech.glide.Glide;
 import com.example.funproject.R;
 import com.example.funproject.adapter.VideoListAdapter;
 import com.example.funproject.entity.Video;
+import com.example.funproject.util.PermissionUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
@@ -76,6 +78,13 @@ public class AgeAnalaysActivity extends BaseActivity {
     private ImageCapture imageCapture;
     private File outputDirectory;
     private ExecutorService cameraExecutor;
+    private static final String[] PERMISSIONS_EXTERNAL_STORAGE = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE
+    };
+
+    private static final int REQUEST_CODE_STORAGE = 1;
 
 private  int age;
     /*
@@ -227,27 +236,33 @@ private  int age;
     }
     public void callApiLocal(View view) {
         // 设置照片等保存的位置
-
         outputDirectory = getOutputDirectory();
         // 设置拍照按钮监听
         takePhoto();
         cameraExecutor = Executors.newSingleThreadExecutor();
+        //获取访问权限
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            // 已经被授予该权限，可以访问外部存储器中的文件，开始进行人脸识别
 
+        } else {
+            // 未被授予该权限，需要申请权限
+            PermissionUtil.checkPermission(this,PERMISSIONS_EXTERNAL_STORAGE,REQUEST_CODE_STORAGE);
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-
 //                    String filePath =  photoFile.getPath();
+
                     System.out.println(photoFile.getPath());
                     Uri savedUri = Uri.fromFile(photoFile);
                     // filePath请改成您的真实文件路径
-                     String filePath = "resource/test_images/myPhoto.jpg";
+                    String filePath = "resource/test_images/myPhoto.jpg";
 //                    String filePath = String.valueOf(currentImageFile.toURL());
 
                     Log.d(TAG, String.format("begin callApi: %s %s", "RecognizeBankCard", filePath));
                     // 使用文件，文件通过inputStream传入接口。这里只是演示了assets下的文件如何转为stream，如果文件来自其他地方，如sdcard或者摄像头，请自行查看android开发文档或教程将文件转为stream之后传入。
-                   InputStream inputStream = AgeAnalaysActivity.this.getAssets().open(filePath);
+                    InputStream inputStream = AgeAnalaysActivity.this.getAssets().open(filePath);
 //                    InputStream inputStream = new FileInputStream(photoFile);
 //                 InputStream inputStream = new FileInputStream(ageAnalaysPhotePath);
 
@@ -275,7 +290,7 @@ private  int age;
                     JSONObject dataObj = JSONObject.parseObject(data);
 
                     JSONArray ageListObj = dataObj.getJSONArray("AgeList");
-                         age = ageListObj.getInteger(0);
+                    age = ageListObj.getInteger(0);
 
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("age",age);
@@ -303,8 +318,7 @@ private  int age;
              age = (int)data.getSerializable("age");
             if(age>=18) {
                 showToastSync("人脸认证成功");
-                navigateToWithFlag(HomeActivity.class,
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+              navigateTo(HomeActivity.class);
             }else{
                 showToastSync("人脸认证失败");
                 Intent intent = new Intent(AgeAnalaysActivity.this, LoginActivity.class);

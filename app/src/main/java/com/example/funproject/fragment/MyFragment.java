@@ -1,6 +1,8 @@
 package com.example.funproject.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,8 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import com.example.funproject.MainActivity;
 import com.example.funproject.R;
+import com.example.funproject.activity.HomeActivity;
 import com.example.funproject.activity.LoginActivity;
+import com.example.funproject.activity.SettingActivity;
+import com.example.funproject.database.UserDataBaseHelper;
+import com.example.funproject.entity.User;
+
+import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +49,8 @@ public class MyFragment extends Fragment {
     private TextView collectNum;
     private TextView commentNum;
     private TextView shareNum;
+    private SharedPreferences sharedPreferences;
+    private UserDataBaseHelper mUserHelper;
     public MyFragment() {
         // Required empty public constructor
     }
@@ -69,6 +80,11 @@ public class MyFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+            //获得数据库帮助器实例
+            mUserHelper = UserDataBaseHelper.getInstance(getActivity());
+            //打开数据库读写连接
+            mUserHelper.openReadLink();
+            mUserHelper.openWriteLink();
 
     }
 
@@ -78,20 +94,61 @@ public class MyFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_my, container, false);
         initView(view);
-
+        initData();
         rl_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isLogout", true);
+                editor.commit();
+                Intent in = new Intent(getActivity(), MainActivity.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(in);
+            }
+        });
+        rl_changeInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getActivity(), SettingActivity.class);
+                startActivity(in);
+            }
+        });
+        myHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initData();
             }
         });
         return view;
     }
+    private void initData() {
+        sharedPreferences = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+//         使用共享内存中干的aacount,从数据库中获取当前登录用户的所有信息加载到“我的界面”
+     if(sharedPreferences.contains("account")){
+         String tempName = sharedPreferences.getString("account",null);
+        User user= mUserHelper.querryByUsername(tempName);
+
+         mName.setText(user.getUsername());
+
+//         myHeader.setImageURI();
+         myIntroduce.setText(user.getIntroduce());
+         favoratesNum.setText(user.getFavoratesNum().toString());
+         commentNum.setText(user.getCommentNum().toString());
+         collectNum.setText(user.getCollectesNum().toString());
+         shareNum.setText(user.getShareNum().toString());
+     }
+    }
 
     private void initView(View view) {
         rl_logout = view.findViewById(R.id.rl_logout);
-
+        rl_changeInfo =view.findViewById(R.id.rl_changeMessage);
+        myHeader =view.findViewById(R.id.iv_header);
+        mName = view.findViewById(R.id.tv_name);
+        myIntroduce = view.findViewById(R.id.tv_introduce);
+        favoratesNum = view.findViewById(R.id.tv_favoratsNum);
+        collectNum = view.findViewById(R.id.tv_collectNum);
+        commentNum = view.findViewById(R.id.tv_commentNum);
+        shareNum = view.findViewById(R.id.tv_shareNum);
     }
 
 

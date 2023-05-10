@@ -10,6 +10,10 @@ import com.example.funproject.database.UserDataBaseHelper;
 import com.example.funproject.entity.User;
 import com.example.funproject.util.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class RegisterActivity extends BaseActivity {
     private UserDataBaseHelper mUserHelper;
     private EditText et_username;
@@ -25,7 +29,13 @@ private Button bt_register;
     private void register() {
         String account = et_username.getText().toString().trim();
         String pwd = et_pwd.getText().toString().trim();
-        User user = new User(0,account,pwd,"null", 0, 0, 0, 0, "null", "null");
+
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss"); //设置时间格式
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+08")); //设置时区
+        Date curDate = new Date(System.currentTimeMillis()); //获取当前时间
+        String createDate = formatter.format(curDate);   //格式转换
+
+        User user = new User(0,account,pwd,"暂无", 0, 0, 0, 0, createDate, "暂无");
         if(StringUtils.isEmpty(account)){
             showToastSync("请输入账户");
         }

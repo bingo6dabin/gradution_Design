@@ -28,12 +28,15 @@ private SharedPreferences preferences;
         loginButton = findViewById(R.id.btn_login);
         registerButton = findViewById(R.id.btn_register);
         preferences =  getSharedPreferences("config", Context.MODE_PRIVATE);
-        if(preferences.contains("isRemenber")) {
+        if(preferences.contains("isRemenber")&&!preferences.contains("isLogout")) {
             navigateTo(AgeAnalaysActivity.class);
         }
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences.Editor editor =preferences.edit();
+                editor.remove("isLogout");
+                editor.commit();
                 Intent inToLogin  = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(inToLogin);
             }
