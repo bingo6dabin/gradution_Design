@@ -58,7 +58,7 @@ public class funProDataBaseHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
+//用户表
         String createUser = "CREATE TABLE IF NOT EXISTS user (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
                 "username VARCHAR NOT NULL,"+
@@ -71,7 +71,7 @@ public class funProDataBaseHelper extends SQLiteOpenHelper {
                 "_shareNum Integer NOT NULL,"+
                 "createTime VARCHAR NOT NULL);";
         sqLiteDatabase.execSQL(createUser);
-
+//视频表
         String createVideo = "CREATE TABLE IF NOT EXISTS video (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
                 "_uid INTEGER  NOT NULL,"+
@@ -83,10 +83,45 @@ public class funProDataBaseHelper extends SQLiteOpenHelper {
                 "description VARCHAR NOT NULL,"+
                 "_favoritesCount Integer NOT NULL,"+
                 "_CollectCount Integer NOT NULL,"+
-                "play Integer NOT NULL,"+
+                "_play Integer NOT NULL,"+
                 "createTime VARCHAR NOT NULL);";
         sqLiteDatabase.execSQL(createVideo);
-
+//        点赞表
+        String createFavorate = "CREATE TABLE IF NOT EXISTS favorite (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
+                "_uid INTEGER  NOT NULL,"+
+                "_vid INTEGER  NOT NULL);";
+        sqLiteDatabase.execSQL(createFavorate);
+//        收藏表
+        String createCollect = "CREATE TABLE IF NOT EXISTS collect (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
+                "_uid INTEGER  NOT NULL,"+
+                "_vid INTEGER  NOT NULL);";
+        sqLiteDatabase.execSQL(createCollect);
+//        分享表
+        String createShare = "CREATE TABLE IF NOT EXISTS share (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
+                "_uid INTEGER  NOT NULL,"+
+                "_sharedId INTEGER  NOT NULL);";
+        sqLiteDatabase.execSQL(createShare);
+//        评论表
+        String createComment = "CREATE TABLE IF NOT EXISTS comment (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
+                "_uid INTEGER  NOT NULL,"+
+                "_vid INTEGER  NOT NULL,"+
+                "commentInfo VARCHAR  NOT NULL);";
+        sqLiteDatabase.execSQL(createComment);
+//        关注表
+        String createFollow = "CREATE TABLE IF NOT EXISTS follow (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
+                "_uid INTEGER  NOT NULL,"+
+                "_followId INTEGER  NOT NULL);";
+        sqLiteDatabase.execSQL(createFollow);
+//        作品表
+        String createWork = "CREATE TABLE IF NOT EXISTS work (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"+
+                "_vid INTEGER  NOT NULL);";
+        sqLiteDatabase.execSQL(createWork);
     }
 
     @Override

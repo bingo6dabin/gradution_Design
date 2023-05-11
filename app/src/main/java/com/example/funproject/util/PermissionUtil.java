@@ -8,6 +8,7 @@ import android.os.Build;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 public class PermissionUtil {
 
@@ -30,6 +31,7 @@ public class PermissionUtil {
         }
         return true;
     }
+
 
 
     // 检查权限结果数组，返回true表示都已经获得授权。返回false表示至少有一个未获得授权

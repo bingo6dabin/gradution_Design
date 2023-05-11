@@ -17,6 +17,7 @@ import com.example.funproject.adapter.MessageListAdapter;
 import com.example.funproject.adapter.VideoListAdapter;
 import com.example.funproject.dedigned_class.ModifyClass.GridSpacingItemDecoration;
 import com.example.funproject.entity.NewsEntity;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,5 +91,46 @@ public class MessageFragment extends Fragment {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount,spacing,includeEdge));
          return  view;
     }
+    private void getNewsList(final boolean isRefresh) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("page", pageNum);
+        params.put("limit", ApiConfig.PAGE_SIZE);
+        Api.config(ApiConfig.NEWS_LIST, params).getRequest(getActivity(), new TtitCallback() {
+            @Override
+            public void onSuccess(final String res) {
+                if (isRefresh) {
+                    refreshLayout.finishRefresh(true);
+                } else {
+                    refreshLayout.finishLoadMore(true);
+                }
+                NewsListResponse response = new Gson().fromJson(res, NewsListResponse.class);
+                if (response != null && response.getCode() == 0) {
+                    List<NewsEntity> list = response.getPage().getList();
+                    if (list != null && list.size() > 0) {
+                        if (isRefresh) {
+                            datas = list;
+                        } else {
+                            datas.addAll(list);
+                        }
+                        mHandler.sendEmptyMessage(0);
+                    } else {
+                        if (isRefresh) {
+                            showToastSync("暂时无数据");
+                        } else {
+                            showToastSync("没有更多数据");
+                        }
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Exception e) {
+                if (isRefresh) {
+                    refreshLayout.finishRefresh(true);
+                } else {
+                    refreshLayout.finishLoadMore(true);
+                }
+            }
+        });
+    }
 }

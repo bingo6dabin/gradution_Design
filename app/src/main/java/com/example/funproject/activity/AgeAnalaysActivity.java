@@ -1,41 +1,31 @@
 package com.example.funproject.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
-import androidx.camera.core.CameraX;
-import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
-import androidx.camera.core.impl.ImageCaptureConfig;
-import androidx.camera.core.internal.IoConfig;
 import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.video.Recording;
-import androidx.camera.video.VideoCapture;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Size;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -43,7 +33,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.facebody20191230.Client;
 import com.aliyun.facebody20191230.models.RecognizeFaceAdvanceRequest;
-import com.aliyun.facebody20191230.models.RecognizeFaceRequest;
 import com.aliyun.facebody20191230.models.RecognizeFaceResponse;
 
 
@@ -52,20 +41,19 @@ import com.aliyun.tea.TeaModel;
 import com.aliyun.teaopenapi.models.Config;
 import com.aliyun.teautil.Common;
 import com.aliyun.teautil.models.RuntimeOptions;
-import com.bumptech.glide.Glide;
 import com.example.funproject.R;
-import com.example.funproject.adapter.VideoListAdapter;
-import com.example.funproject.entity.Video;
 import com.example.funproject.util.PermissionUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -83,9 +71,7 @@ public class AgeAnalaysActivity extends BaseActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.MANAGE_EXTERNAL_STORAGE
     };
-
     private static final int REQUEST_CODE_STORAGE = 1;
-
 private  int age;
     /*
      这个client是为了请求服务端接口，这里只是为了端上演示，所以将代码写在了Android端
@@ -127,7 +113,6 @@ private  int age;
                     new SimpleDateFormat(Configuration.FILENAME_FORMAT,
                             Locale.SIMPLIFIED_CHINESE).format(System.currentTimeMillis())
                             + ".jpg");
-
             // 创建 output option 对象，用以指定照片的输出方式
             ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions
                     .Builder(photoFile)
@@ -234,7 +219,7 @@ private  int age;
         boolean isExist = mediaDir.exists() || mediaDir.mkdir();
         return isExist ? mediaDir : null;
     }
-    public void callApiLocal(View view) {
+    public void callApiLocal(View view) throws IOException {
         // 设置照片等保存的位置
         outputDirectory = getOutputDirectory();
         // 设置拍照按钮监听
@@ -252,30 +237,28 @@ private  int age;
             @Override
             public void run() {
                 try {
-//                    String filePath =  photoFile.getPath();
 
-                    System.out.println(photoFile.getPath());
-                    Uri savedUri = Uri.fromFile(photoFile);
                     // filePath请改成您的真实文件路径
                     String filePath = "resource/test_images/myPhoto.jpg";
-//                    String filePath = String.valueOf(currentImageFile.toURL());
-
-                    Log.d(TAG, String.format("begin callApi: %s %s", "RecognizeBankCard", filePath));
+                    System.out.println(photoFile.getPath());
                     // 使用文件，文件通过inputStream传入接口。这里只是演示了assets下的文件如何转为stream，如果文件来自其他地方，如sdcard或者摄像头，请自行查看android开发文档或教程将文件转为stream之后传入。
                     InputStream inputStream = AgeAnalaysActivity.this.getAssets().open(filePath);
-//                    InputStream inputStream = new FileInputStream(photoFile);
-//                 InputStream inputStream = new FileInputStream(ageAnalaysPhotePath);
-
-//                   InputStream inputStream1 = getContentResolver().openInputStream(savedUri);
+                    //此处有Bug
+//                    compression();
+//                    FileInputStream inputStream = new FileInputStream(photoFile);
 
 
                     RecognizeFaceAdvanceRequest recognizeFaceAdvanceRequest = new RecognizeFaceAdvanceRequest()
                             .setAge(true)
                             .setImageURLObject(inputStream);
                     RuntimeOptions runtime = new RuntimeOptions();
-
                     // 复制代码运行请自行打印 API 的返回值
                     RecognizeFaceResponse recognizeFaceResponse = client.recognizeFaceAdvance(recognizeFaceAdvanceRequest, runtime);
+
+                     inputStream.close();
+                    if (photoFile != null && photoFile.exists()) {
+                        photoFile.delete();}
+
                     // 获取整体结果
                     System.out.println("结果如下");
                     System.out.println(Common.toJSONString(TeaModel.buildMap(recognizeFaceResponse)));
@@ -326,5 +309,21 @@ private  int age;
             }
         }
     };
+    public void compression() throws IOException {
+        // 先将相机拍摄的照片转换成 Bitmap 对象
+        Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getPath());
+// 指定压缩后的宽高（单位为像素）
+        int targetWidth = 640;
+        int targetHeight = 480;
+// 计算压缩比例
+        int scaleFactor = Math.min(bitmap.getWidth() / targetWidth, bitmap.getHeight() / targetHeight);
+// 压缩图片
+        Bitmap compressedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / scaleFactor, bitmap.getHeight() / scaleFactor, true);
+// 将压缩后的图片保存到文件中
+        FileOutputStream outputStream = new FileOutputStream(photoFile);
+        compressedBitmap.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
+        outputStream.close();
+
+    }
 
 }

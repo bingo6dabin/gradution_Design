@@ -38,7 +38,7 @@ import java.util.regex.Matcher;
  * Use the {@link HomeBaseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeBaseFragment extends Fragment {
+public abstract class HomeBaseFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -68,7 +68,17 @@ public class HomeBaseFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static HomeBaseFragment newInstance(String param1, String param2) {
-        HomeBaseFragment fragment = new HomeBaseFragment();
+        HomeBaseFragment fragment = new HomeBaseFragment() {
+            @Override
+            public void onLikeButtonClicked(int position) {
+
+            }
+
+            @Override
+            public void onLikeClick(int position) {
+
+            }
+        };
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -109,6 +119,13 @@ public class HomeBaseFragment extends Fragment {
     private void initialData() {
 
     }
+
+    // 实现 Adapter 中定义的接口
+    public abstract void onLikeButtonClicked(int position);
+
+    // 实现 Adapter 中定义的接口
+    public abstract void onLikeClick(int position);
+
     @Override
     //销毁
     public void onDestroy() {

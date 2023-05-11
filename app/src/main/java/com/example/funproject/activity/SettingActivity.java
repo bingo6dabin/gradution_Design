@@ -158,7 +158,15 @@ private  String picturePath;
         }
 
     }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (PermissionUtil.checkGrant(grantResults)) {
+            Log.d("Jun", "存储权限获取成功");
+        } else {
+            Log.d("Jun", "存储权限获取失败");
+        }
+    }
     private void initView() {
         header = findViewById(R.id.iv_UpdataHeader);
         account = findViewById(R.id.et_UpdataAccount);

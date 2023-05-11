@@ -21,6 +21,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.funproject.R;
 import com.example.funproject.activity.HomeActivity;
 import com.example.funproject.activity.VideoPlayerActivity;
+import com.example.funproject.database.VideoDataBaseHelper;
 import com.example.funproject.entity.Video;
 
 import java.io.IOException;
@@ -34,7 +35,9 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
     private List<Video> mVideoes;
     private  int preViewAccount;
     String mVideoImageUrl;
-    //获取activity的video数据
+    private OnLikeClickListener mListener;
+    private  OnCollectClickListener mCollectListener;
+     //获取activity的video数据
     public VideoListAdapter(List<Video> mVideoes,int preViewAccount){
         this.mVideoes = mVideoes;
         this.preViewAccount =preViewAccount;
@@ -60,23 +63,55 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
                 v.getContext().startActivity(intent);
             }
         });
+
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull VideoListAdapter.ViewHolder holder, int position) {
-
+        Video mvideo = mVideoes.get(position);
            Video mVideo =mVideoes.get(position);
            //设置imageView视频的封面图片方法一
 //        mVideoImageUrl=mVideo.getVideoimageUrl();
 //        loadImage(holder.imageView);
 //        方法二使用现有的Glide加载图片速度快
-           System.out.println("图片资源地址");
-           System.out.println(mVideo.getVideoimageUrl());
 //        Glide.with(holder.videoView.getContext()).load(Uri.parse("https://www.jazzradio.fr/media/radio/blues.png"))
 //                .into(holder.imageView);
            Glide.with(holder.videoView.getContext()).load(Uri.parse(mVideo.getVideoimageUrl()))
                    .into(holder.imageView);
+           holder.favorates.setText(String.valueOf(mVideo.getFavoritesCount()));
+           holder.comments.setText(String.valueOf(mVideo.getCommentCount()));
+           holder.collects.setText(String.valueOf(mVideo.getCollectCount()));
+        // 设置点赞按钮的点击事件监听器
+        holder.favoratesIg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //获取当前碎片View的对象Video在mVideos的位置
+                int position = holder.getAdapterPosition();
+                // 获取当前 item 对应的数据
+                Video itemVideo = mVideoes.get(position);
+                notifyItemChanged(position);
+                // 通过接口回调通知 Fragment 更新数据
+                if (mListener != null) {
+                    mListener.onLikeClick(position);
+                }
+            }
+        });
+        //设置收藏按钮的点击事件监听
+        holder.collectsIg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //获取当前碎片View的对象Video在mVideos的位置
+                int position = holder.getAdapterPosition();
+                // 获取当前 item 对应的数据
+                Video itemVideo = mVideoes.get(position);
+                notifyItemChanged(position);
+                // 通过接口回调通知 Fragment 更新数据
+                if (mCollectListener != null) {
+                    mCollectListener.onCollectClick(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -86,12 +121,40 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
 
     //定义viewHold
     public  class ViewHolder extends RecyclerView.ViewHolder{
+        TextView favorates;
+        TextView collects;
+        TextView comments;
+        ImageView favoratesIg;
+        ImageView collectsIg;
+        ImageView commentsIg;
         ImageView imageView;
         View videoView;
         public ViewHolder(@NonNull  View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.video_iv);
+            favorates = itemView.findViewById(R.id.favorates);
+            collects = itemView.findViewById(R.id.collect);
+            comments = itemView.findViewById(R.id.commentVideo);
+            favoratesIg = itemView.findViewById(R.id.img_like);
+            collectsIg = itemView.findViewById(R.id.img_collectVideo);
+            commentsIg = itemView.findViewById(R.id.img_comment);
             videoView = itemView;
         }
     }
+    public interface OnLikeClickListener {
+        void onLikeClick(int position);
+    }
+
+    public void setOnLikeClickListener(OnLikeClickListener listener) {
+        mListener = listener;
+    }
+
+    public interface OnCollectClickListener {
+        void onCollectClick(int position);
+    }
+
+    public void setOnCollectClickListener(OnCollectClickListener listener) {
+        mCollectListener = listener;
+    }
+
 }

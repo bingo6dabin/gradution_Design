@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity.HomeActivity">
 
     <RadioGroup
         android:id="@+id/rg_tab_bar"
@@ -25,21 +25,21 @@
             android:drawableTop="@drawable/tab_menu_message"
             android:text="@string/tab_menu_message" />
 
-        <RadioButton
-            android:id="@+id/rb_share"
-            style="@style/tab_menu_item"
-            android:drawableTop="@drawable/share_blue"
-            />
+<!--        <RadioButton-->
+<!--            android:id="@+id/rb_share"-->
+<!--            style="@style/tab_menu_item"-->
+<!--            android:drawableTop="@drawable/share_blue"-->
+<!--            />-->
         <RadioButton
             android:id="@+id/rb_my"
             style="@style/tab_menu_item"
             android:drawableTop="@drawable/tab_menu_better"
             android:text="@string/tab_menu_my" />
-        <RadioButton
-            android:id="@+id/rb_setting"
-            style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_message"
-            android:text="@string/tab_menu_setting" />
+<!--        <RadioButton-->
+<!--            android:id="@+id/rb_setting"-->
+<!--            style="@style/tab_menu_item"-->
+<!--            android:drawableTop="@drawable/tab_menu_message"-->
+<!--            android:text="@string/tab_menu_setting" />-->
     </RadioGroup>
 
     <View

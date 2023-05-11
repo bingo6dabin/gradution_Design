@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
+    android:id="@+id/fg_my"
     tools:context=".fragment.MyFragment">
 
     <LinearLayout
@@ -76,6 +77,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/ll_JumpToFavorite"
                     android:layout_width="95dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -98,6 +100,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_jumpToCollect"
                     android:layout_width="95dp"
                     android:layout_height="match_parent"
                     android:gravity="center"

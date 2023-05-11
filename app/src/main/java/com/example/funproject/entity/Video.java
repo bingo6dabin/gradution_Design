@@ -32,7 +32,7 @@ public class Video implements Serializable {
     public Video(Integer vid, Integer uid, String authorName, String videoName, String typename,
                  String videoimageUrl, String videoUrl, String description,
                  Integer favoritesCount, Integer collectCount, Integer play, String creatTime, Integer commentCount) {
-        Vid = vid;
+        this.Vid = vid;
         this.uid = uid;
         this.authorName = authorName;
         VideoName = videoName;
@@ -60,7 +60,7 @@ public class Video implements Serializable {
     }
 
     public void setVid(Integer vid) {
-        Vid = vid;
+        this.Vid = vid;
     }
 
     public Integer getUid() {
