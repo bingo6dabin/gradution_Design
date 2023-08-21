@@ -86,10 +86,11 @@ private  int age;
             // 2、"YOUR_ACCESS_KEY_ID", "YOUR_ACCESS_KEY_SECRET" 的生成请参考https://help.aliyun.com/document_detail/175144.html
             // 如果您是用的子账号AccessKey，还需要为子账号授予权限AliyunVIAPIFullAccess，请参考https://help.aliyun.com/document_detail/145025.html
             Config config = new Config()
+                    // 正常使用app需要先获取自己的Id以及密码
                     // 您的 AccessKey ID
-                    .setAccessKeyId("LTAI5t6BPwCS7LwX8SJvJ9ut")
+                    .setAccessKeyId("")
                     // 您的 AccessKey Secret
-                    .setAccessKeySecret("NsFbIZGf9KN8UIGCpuNMmYPdK19jlj");
+                    .setAccessKeySecret("");
             // 3、访问的域名。注意：这个地方需要求改为相应类目的域名
             config.endpoint = "facebody.cn-shanghai.aliyuncs.com";
             client = new Client(config);
